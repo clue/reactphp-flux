@@ -1,0 +1,27 @@
+{
+    "name": "clue/reactphp-flux",
+    "description": "Flux, the lightweight stream processor to concurrently do many (but not too many) things at once, built on top of ReactPHP.",
+    "keywords": ["flux", "streaming", "non-blocking", "concurrency", "message queue", "ReactPHP", "async"],
+    "homepage": "https://github.com/clue/reactphp-flux",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Christian Lück",
+            "email": "christian@lueck.tv"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Clue\\React\\Flux\\": "src"
+        }
+    },
+    "require": {
+        "react/promise": "^2.5 || ^1.2.1",
+        "react/stream": "^0.7.7"
+    },
+    "require-dev": {
+        "clue/buzz-react": "^2.3",
+        "clue/ndjson-react": "^0.1.2",
+        "phpunit/phpunit": "^6.4 || ^5.7 || ^4.8.35"
+    }
+}
