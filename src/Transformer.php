@@ -33,10 +33,12 @@ use React\Stream\WritableStreamInterface;
  *
  * This library works under the assumption that you want to concurrently handle
  * async operations that use a [Promise](https://github.com/reactphp/promise)-based API.
+ * You can use this to concurrently run multiple HTTP requests, database queries
+ * or pretty much any API that already uses Promises.
  *
  * The demonstration purposes, the examples in this documentation use the async
- * HTTP client [clue/reactphp-buzz](https://github.com/clue/reactphp-buzz), but you
- * may use any Promise-based API with this project. Its API can be used like this:
+ * HTTP client [clue/reactphp-buzz](https://github.com/clue/reactphp-buzz).
+ * Its API can be used like this:
  *
  * ```php
  * $loop = React\EventLoop\Factory::create();
@@ -183,17 +185,17 @@ use React\Stream\WritableStreamInterface;
  * $transformer->write('http://example.com/');
  * ```
  *
- * This callable receives a single data argument as passed to the writable side
+ * The handler receives a single data argument as passed to the writable side
  * and must return a promise. A succesful fulfillment value will be forwarded to
  * the readable end of the stream, while an unsuccessful rejection value will
- * emit an `error` event, try to `cancel()` all pending operations and and
+ * emit an `error` event, try to `cancel()` all pending operations and then
  * `close()` the stream.
  *
  * Note that this class makes no assumptions about any data types. Whatever is
  * written to it, will be processed by the transformation handler. Whatever the
  * transformation handler yields will be forwarded to its readable end.
  *
- * The `end(mixed $data = null): bool` method can be used to
+ * The `end(mixed $data = null): void` method can be used to
  * soft-close the stream once all transformation handlers are completed.
  * It will close the writable side, wait for all outstanding transformation
  * handlers to complete and then emit an `end` event and then `close()` the stream.
