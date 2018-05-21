@@ -13,10 +13,10 @@ all resources on your side.
 Instead, you can use this library to stream your arbitrarily large input list
 as individual records to a non-blocking (async) transformation handler. It uses
 [ReactPHP](https://reactphp.org) to enable you to concurrently process multiple
-records at once. It allows you to control the concurrency, so that by allowing
+records at once. You can control the concurrency limit, so that by allowing
 it to process 10 operations at the same time, you can thus process this large
 input list around 10 times faster and at the same time you're no longer limited
-in how many records this list may contain (think processing millions of records).
+how many records this list may contain (think processing millions of records).
 This library provides a simple API that is easy to use in order to manage any
 kind of async operation without having to mess with most of the low-level details.
 You can use this to throttle multiple HTTP requests, database queries or pretty
@@ -179,10 +179,12 @@ $transformer = new Transformer(10, array($browser, 'get'));
 
 This library works under the assumption that you want to concurrently handle
 async operations that use a [Promise](https://github.com/reactphp/promise)-based API.
+You can use this to concurrently run multiple HTTP requests, database queries
+or pretty much any API that already uses Promises.
 
 The demonstration purposes, the examples in this documentation use the async
-HTTP client [clue/reactphp-buzz](https://github.com/clue/reactphp-buzz), but you
-may use any Promise-based API with this project. Its API can be used like this:
+HTTP client [clue/reactphp-buzz](https://github.com/clue/reactphp-buzz).
+Its API can be used like this:
 
 ```php
 $loop = React\EventLoop\Factory::create();
@@ -329,17 +331,17 @@ $transformer->on('data', function (ResponseInterface $response) {
 $transformer->write('http://example.com/');
 ```
 
-This callable receives a single data argument as passed to the writable side
+This handler receives a single data argument as passed to the writable side
 and must return a promise. A succesful fulfillment value will be forwarded to
 the readable end of the stream, while an unsuccessful rejection value will
-emit an `error` event, try to `cancel()` all pending operations and and
+emit an `error` event, try to `cancel()` all pending operations and then
 `close()` the stream.
 
 Note that this class makes no assumptions about any data types. Whatever is
 written to it, will be processed by the transformation handler. Whatever the
 transformation handler yields will be forwarded to its readable end.
 
-The `end(mixed $data = null): bool` method can be used to
+The `end(mixed $data = null): void` method can be used to
 soft-close the stream once all transformation handlers are completed.
 It will close the writable side, wait for all outstanding transformation
 handlers to complete and then emit an `end` event and then `close()` the stream.
