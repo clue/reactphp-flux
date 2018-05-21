@@ -21,7 +21,7 @@
     },
     "require-dev": {
         "clue/buzz-react": "^2.3",
-        "clue/ndjson-react": "^0.1.2",
+        "clue/ndjson-react": "^1.0",
         "phpunit/phpunit": "^6.4 || ^5.7 || ^4.8.35"
     }
 }
