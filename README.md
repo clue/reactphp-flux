@@ -49,8 +49,6 @@ much any API that already uses Promises.
 * [License](#license)
 * [More](#more)
 
-> Note: This project is in an early alpha stage! Feel free to report any issues you encounter.
-
 ## Quickstart example
 
 Once [installed](#install), you can use the following code to process an example
@@ -432,11 +430,14 @@ $uploader = new Transformer(10, function ($data) use ($http) {
 The recommended way to install this library is [through Composer](https://getcomposer.org).
 [New to Composer?](https://getcomposer.org/doc/00-intro.md)
 
+This project follows [SemVer](https://semver.org/).
 This will install the latest supported version:
 
 ```bash
-$ composer require clue/reactphp-flux:dev-master
+$ composer require clue/reactphp-flux:^1.0
 ```
+
+See also the [CHANGELOG](CHANGELOG.md) for details about version upgrades.
 
 This project aims to run on any platform and thus does not require any PHP
 extensions and supports running on legacy PHP 5.3 through current PHP 7+ and
