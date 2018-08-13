@@ -1,5 +1,24 @@
 # Changelog
 
+## 1.1.0 (2018-08-13)
+
+*   Feature: Add `all()` helper to await successful fulfillment of all operations.
+    (#11 by @clue)
+
+    ```php
+    // new: limit concurrency while awaiting all operations to complete
+    $promise = Transformer::all($input, 3, function ($data) use ($browser, $url) {
+        return $browser->post($url, [], json_encode($data));
+    });
+
+    $promise->then(function ($count) {
+        echo 'All ' . $count . ' jobs successful!' . PHP_EOL;
+    });
+    ```
+
+*   Feature: Forward compatibility with stable Stream v1.0 LTS.
+    (#10 by @clue)
+
 ## 1.0.0 (2018-05-25)
 
 *   First stable release, following SemVer

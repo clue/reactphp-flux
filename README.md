@@ -34,7 +34,7 @@ much any API that already uses Promises.
   and does not get in your way.
   Builds on top of well-tested components and well-established concepts instead of reinventing the wheel.
 * **Good test coverage** -
-  Comes with an [automated tests suite](#tests) and is regularly tested in the *real world*
+  Comes with an [automated tests suite](#tests) and is regularly tested in the *real world*.
 
 **Table of contents**
 
@@ -541,7 +541,7 @@ This project follows [SemVer](https://semver.org/).
 This will install the latest supported version:
 
 ```bash
-$ composer require clue/reactphp-flux:^1.0
+$ composer require clue/reactphp-flux:^1.1
 ```
 
 See also the [CHANGELOG](CHANGELOG.md) for details about version upgrades.
