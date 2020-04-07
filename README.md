@@ -40,11 +40,12 @@ much any API that already uses Promises.
 
 * [Quickstart example](#quickstart-example)
 * [Usage](#usage)
-  * [Transformer](#transformer)
-    * [Promises](#promises)
-    * [Timeout](#timeout)
-    * [Streaming](#streaming)
-    * [all()](#all)
+    * [Transformer](#transformer)
+        * [Promises](#promises)
+        * [Timeout](#timeout)
+        * [Streaming](#streaming)
+        * [all()](#all)
+        * [any()](#any)
 * [Install](#install)
 * [Tests](#tests)
 * [License](#license)
@@ -510,7 +511,7 @@ operation and returns a Promise as a placeholder for its future result.
 The fulfillment value for each job will be ignored, so for best
 performance it's recommended to not return any excessive data structures.
 If the given argument is not a valid callable, this method will reject
-with an `InvalidArgumentExceptionn` without processing any jobs.
+with an `InvalidArgumentException` without processing any jobs.
 
 ```php
 // using a Closure as handler is usually recommended
@@ -527,6 +528,116 @@ $promise = Transformer::all($stream, 10, array($browser, 'get'));
 Note that this method returns a promise that resolves with the total
 number of successful operations only if all operations succeed. This
 is mostly a convenience method that uses the [`Transformer`](#transformer)
+under the hood. If your input data is small enough to fit into memory
+(a few dozens or hundreds of operations), you may want to use
+[clue/reactphp-mq](https://github.com/clue/reactphp-mq) instead and keep
+all operations in memory without using a streaming approach.
+
+#### any()
+
+The static `any(ReadableStreamInterface $input, int $concurrency, callable $handler): PromiseInterface<mixed,Exception>` method can be used to
+concurrently process some jobs from the input stream through the given `$handler`.
+
+This is a convenience method which uses the `Transformer` internally to
+schedule the jobs from the input stream while limiting concurrency to
+ensure no more than `$concurrency` jobs ever run at once. It will return
+a promise which resolves with the first successful resolution value on
+success.
+
+```php
+$loop = React\EventLoop\Factory::create();
+$browser = new Clue\React\Buzz\Browser($loop);
+
+$promise = Transformer::any($input, 3, function ($data) use ($browser, $url) {
+    return $browser->post($url, [], json_encode($data));
+});
+
+$promise->then(function (ResponseInterface $response) {
+    echo 'First successful job: ' . $response->getBody() . PHP_EOL;
+});
+```
+
+If the first job succeeds, it will resolve the resulting promise with its
+resolution value, `close()` the input stream and will try to cancel all
+other outstanding jobs.
+
+If either of the jobs fails, it will stay in a pending state and will
+wait for one of the other jobs to succeed. If all jobs fail, it will
+reject the resulting promise. Calling `cancel()` on the pending promise
+will `close()` the input stream and will try to cancel all outstanding
+jobs. Similarly, if the `$input` stream emits an `error` event, it will
+reject the resulting promise and will try to cancel all outstanding jobs.
+
+The `$input` parameter must be a `ReadableStreamInterface` which emits
+one `data` event for each job to process. Each element will be passed to
+the `$handler` to start one job. The fulfillment value for the first
+successful job will be used to fulfill the resulting promise. When the
+stream emits an `end` or `close` event, this method will wait for all
+outstanding jobs to complete and then resolve or reject accordingly. If
+this stream is already closed or does not emit any `data` events, this
+method will reject with an `UnderflowException` without processing any
+jobs.
+
+```php
+$input = new ThroughStream();
+
+$promise = Transformer::any($input, 2, $handler);
+
+$input->write('a');
+$input->write('b');
+$input->write('c');
+$input->end();
+```
+
+Because streams are one of the core abstractions of ReactPHP, a large number
+of stream implementations are available for many different use cases. For
+example, this allows you to use [clue/reactphp-ndjson](https://github.com/clue/reactphp-ndjson)
+or [clue/reactphp-csv](https://github.com/clue/reactphp-csv) to process
+large lists of structured input data. See also [streaming](#streaming) for
+more details.
+
+The `$concurrency` parameter sets a new soft limit for the maximum number
+of jobs to handle concurrently. Finding a good concurrency limit depends
+on your particular use case. It's common to limit concurrency to a rather
+small value, as doing more than a dozen of things at once may easily
+overwhelm the receiving side. Using a `1` value will ensure that all jobs
+are processed one after another, effectively creating a "waterfall" of
+jobs. Using a value less than 1 will reject with an
+`InvalidArgumentException` without processing any jobs.
+
+```php
+// handle up to 10 jobs concurrently
+$promise = Transformer::any($stream, 10, $handler);
+```
+
+```php
+// handle each job after another without concurrency (waterfall)
+$promise = Transformer::any($stream, 1, $handler);
+```
+
+The `$handler` parameter must be a valid callable that accepts your job
+parameter (the data from the `$input` stream), invokes the appropriate
+operation and returns a Promise as a placeholder for its future result.
+The fulfillment value for the first successful job will be used to
+fulfill the resulting promise. If the given argument is not a valid
+callable, this method will reject with an `InvalidArgumentException`
+without processing any jobs.
+
+```php
+// using a Closure as handler is usually recommended
+$promise = Transformer::any($stream, 10, function ($url) use ($browser) {
+    return $browser->get($url);
+});
+```
+
+```php
+// accepts any callable, so PHP's array notation is also supported
+$promise = Transformer::any($stream, 10, array($browser, 'get'));
+```
+
+Note that this method returns a promise that resolves with the first
+successful resolution value only if any operation succeeds. This is
+mostly a convenience method that uses the [`Transformer`](#transformer)
 under the hood. If your input data is small enough to fit into memory
 (a few dozens or hundreds of operations), you may want to use
 [clue/reactphp-mq](https://github.com/clue/reactphp-mq) instead and keep
