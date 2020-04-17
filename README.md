@@ -25,7 +25,7 @@ much any API that already uses Promises.
 * **Async execution of operations** -
   Choose how many async operations should be processed at once (concurrently).
   Process their results as soon as responses come in.
-  The Promise-based design provides a *sane* interface to working with out of bound results.
+  The Promise-based design provides a *sane* interface to working with out of order results.
 * **Standard interfaces** -
   Allows easy integration with existing higher-level components by implementing
   ReactPHP's standard [promises](#promises) and [streaming interfaces](#streaming).
@@ -652,7 +652,7 @@ This project follows [SemVer](https://semver.org/).
 This will install the latest supported version:
 
 ```bash
-$ composer require clue/reactphp-flux:^1.1
+$ composer require clue/reactphp-flux:^1.2
 ```
 
 See also the [CHANGELOG](CHANGELOG.md) for details about version upgrades.
@@ -695,7 +695,7 @@ This project is released under the permissive [MIT license](LICENSE).
 
 * If you want to process structured NDJSON files (`.ndjson` file extension),
   you may want to use [clue/reactphp-ndjson](https://github.com/clue/reactphp-ndjson)
-  on the input stream before passing the decoded stream to the transformator.
+  on the input stream before passing the decoded stream to the transformer.
 
 * If you want to process compressed GZIP files (`.gz` file extension),
   you may want to use [clue/reactphp-zlib](https://github.com/clue/reactphp-zlib)

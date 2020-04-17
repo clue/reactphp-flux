@@ -1,5 +1,25 @@
 # Changelog
 
+## 1.2.0 (2020-04-17)
+
+*   Feature: Add `any()` helper to await first successful fulfillment of operations.
+    (#15 by @clue)
+
+    ```php
+    // new: limit concurrency while awaiting first operation to complete successfully
+    $promise = Transformer::any($input, 3, function ($data) use ($browser, $url) {
+        return $browser->post($url, [], json_encode($data));
+    });
+
+    $promise->then(function (ResponseInterface $response) {
+        echo 'First successful response: ' . $response->getBody() . PHP_EOL;
+    });
+    ```
+
+*   Improve test suite to run tests on PHP 7.4 and simplify test matrix
+    and add support / sponsorship info.
+    (#13 and #14 by @clue)
+
 ## 1.1.0 (2018-08-13)
 
 *   Feature: Add `all()` helper to await successful fulfillment of all operations.
