@@ -15,6 +15,9 @@
             "Clue\\React\\Flux\\": "src"
         }
     },
+    "autoload-dev": {
+        "psr-4": { "Clue\\Tests\\React\\Flux\\": "tests/" }
+    },
     "require": {
         "react/promise": "^2.5 || ^1.2.1",
         "react/stream": "^1.0 || ^0.7.7"
