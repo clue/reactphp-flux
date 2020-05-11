@@ -1,5 +1,7 @@
 <?php
 
+namespace Clue\Tests\React\Flux;
+
 use Clue\React\Flux\Transformer;
 use PHPUnit\Framework\TestCase;
 use React\Promise;
@@ -254,7 +256,7 @@ class TransformerTest extends TestCase
     public function testWriteEmitsErrorAndCloseEventsIfHandlerRejects()
     {
         $through = new Transformer(1, function () {
-            return Promise\reject(new RuntimeException());
+            return Promise\reject(new \RuntimeException());
         });
 
         $through->on('data', $this->expectCallableNever());
@@ -309,7 +311,7 @@ class TransformerTest extends TestCase
     public function testEndWithDataEmitsErrorAndCloseEventsIfHandlerRejects()
     {
         $through = new Transformer(1, function () {
-            return Promise\reject(new RuntimeException());
+            return Promise\reject(new \RuntimeException());
         });
 
         $through->on('data', $this->expectCallableNever());

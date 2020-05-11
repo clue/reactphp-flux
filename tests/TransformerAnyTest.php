@@ -1,6 +1,6 @@
 <?php
 
-namespace Clue\Tests\React\Mq;
+namespace Clue\Tests\React\Flux;
 
 use Clue\React\Flux\Transformer;
 use PHPUnit\Framework\TestCase;
