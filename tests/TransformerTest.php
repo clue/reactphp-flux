@@ -3,25 +3,20 @@
 namespace Clue\Tests\React\Flux;
 
 use Clue\React\Flux\Transformer;
-use PHPUnit\Framework\TestCase;
 use React\Promise;
 use React\Promise\Deferred;
 
 class TransformerTest extends TestCase
 {
-    /**
-     * @expectedException InvalidArgumentException
-     */
     public function testConstructorThrowsIfConcurrencyIsBelowOne()
     {
+        $this->setExpectedException('InvalidArgumentException');
         new Transformer(0, function () { });
     }
 
-    /**
-     * @expectedException InvalidArgumentException
-     */
     public function testConstructorThrowsIfHandlerIsNotCallable()
     {
+        $this->setExpectedException('InvalidArgumentException');
         new Transformer(1, 'foo');
     }
 
@@ -403,43 +398,5 @@ class TransformerTest extends TestCase
         $ret = $through->pipe($dest);
 
         $this->assertSame($ret, $dest);
-    }
-
-    protected function expectCallableOnce()
-    {
-        $mock = $this->createCallableMock();
-
-        $mock
-            ->expects($this->once())
-            ->method('__invoke');
-
-        return $mock;
-    }
-
-    protected function expectCallableOnceWith($param)
-    {
-        $mock = $this->createCallableMock();
-
-        $mock
-            ->expects($this->once())
-            ->method('__invoke')
-            ->with($param);
-
-        return $mock;
-    }
-
-    protected function expectCallableNever()
-    {
-        $mock = $this->createCallableMock();
-        $mock
-            ->expects($this->never())
-            ->method('__invoke');
-
-        return $mock;
-    }
-
-    protected function createCallableMock()
-    {
-        return $this->getMockBuilder('stdClass')->setMethods(array('__invoke'))->getMock();
     }
 }
