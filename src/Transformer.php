@@ -40,13 +40,13 @@ use React\Promise\PromiseInterface;
  * You can use this to concurrently run multiple HTTP requests, database queries
  * or pretty much any API that already uses Promises.
  *
- * The demonstration purposes, the examples in this documentation use the async
- * HTTP client [clue/reactphp-buzz](https://github.com/clue/reactphp-buzz).
+ * For demonstration purposes, the examples in this documentation use
+ * [ReactPHP's async HTTP client](https://github.com/reactphp/http#client-usage).
  * Its API can be used like this:
  *
  * ```php
  * $loop = React\EventLoop\Factory::create();
- * $browser = new Clue\React\Buzz\Browser($loop);
+ * $browser = new React\Http\Browser($loop);
  *
  * $promise = $browser->get($url);
  * ```
@@ -56,7 +56,7 @@ use React\Promise\PromiseInterface;
  *
  * ```php
  * $loop = React\EventLoop\Factory::create();
- * $browser = new Clue\React\Buzz\Browser($loop);
+ * $browser = new React\Http\Browser($loop);
  *
  * $transformer = new Transformer(10, function ($url) use ($browser) {
  *     return $browser->get($url);
@@ -171,7 +171,7 @@ use React\Promise\PromiseInterface;
  *
  * ```php
  * $loop = React\EventLoop\Factory::create();
- * $browser = new Clue\React\Buzz\Browser($loop);
+ * $browser = new React\Http\Browser($loop);
  *
  * $transformer = new Transformer(10, function ($url) use ($browser) {
  *     return $browser->get($url);
@@ -311,7 +311,7 @@ final class Transformer extends EventEmitter implements DuplexStreamInterface
      *
      * ```php
      * $loop = React\EventLoop\Factory::create();
-     * $browser = new Clue\React\Buzz\Browser($loop);
+     * $browser = new React\Http\Browser($loop);
      *
      * $promise = Transformer::all($input, 3, function ($data) use ($browser, $url) {
      *     return $browser->post($url, [], json_encode($data));
@@ -464,7 +464,7 @@ final class Transformer extends EventEmitter implements DuplexStreamInterface
      *
      * ```php
      * $loop = React\EventLoop\Factory::create();
-     * $browser = new Clue\React\Buzz\Browser($loop);
+     * $browser = new React\Http\Browser($loop);
      *
      * $promise = Transformer::any($input, 3, function ($data) use ($browser, $url) {
      *     return $browser->post($url, [], json_encode($data));

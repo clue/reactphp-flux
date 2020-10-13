@@ -6,7 +6,7 @@ use Psr\Http\Message\ResponseInterface;
 require __DIR__ . '/../vendor/autoload.php';
 
 $loop = React\EventLoop\Factory::create();
-$browser = new Clue\React\Buzz\Browser($loop);
+$browser = new React\Http\Browser($loop);
 
 $concurrency = isset($argv[1]) ? $argv[1] : 3;
 
