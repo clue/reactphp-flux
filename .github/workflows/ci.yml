@@ -36,7 +36,7 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
-      - run: curl -O https://dl.hhvm.com/ubuntu/pool/main/h/hhvm/hhvm_3.30.9-1~bionic_amd64.deb
-      - run: sudo apt install -y --allow-downgrades ./hhvm_3.30.9-1~bionic_amd64.deb
-      - run: hhvm $(which composer) install
+      - uses: azjezz/setup-hhvm@v1
+        with:
+          version: "lts-3.30"
       - run: hhvm vendor/bin/phpunit --coverage-text
