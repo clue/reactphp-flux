@@ -39,4 +39,5 @@ jobs:
       - uses: azjezz/setup-hhvm@v1
         with:
           version: "lts-3.30"
+      - run: hhvm $(which composer) install
       - run: hhvm vendor/bin/phpunit --coverage-text
