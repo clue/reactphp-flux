@@ -1,6 +1,7 @@
 # clue/reactphp-flux
 
 [![CI status](https://github.com/clue/reactphp-flux/workflows/CI/badge.svg)](https://github.com/clue/reactphp-flux/actions)
+[![installs on Packagist](https://img.shields.io/packagist/dt/clue/reactphp-flux?color=blue&label=installs%20on%20Packagist)](https://packagist.org/packages/clue/reactphp-flux)
 
 Flux, the lightweight stream processor to concurrently do many (but not too many) things at once,
 built on top of [ReactPHP](https://reactphp.org/).
