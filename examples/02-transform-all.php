@@ -5,8 +5,7 @@ use Psr\Http\Message\ResponseInterface;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-$loop = React\EventLoop\Factory::create();
-$browser = new React\Http\Browser($loop);
+$browser = new React\Http\Browser();
 
 $concurrency = isset($argv[1]) ? $argv[1] : 3;
 $url = isset($argv[2]) ? $argv[2] : 'http://httpbin.org/post';
@@ -14,8 +13,7 @@ $url = isset($argv[2]) ? $argv[2] : 'http://httpbin.org/post';
 // load a huge number of users to process from NDJSON file
 $input = new Clue\React\NDJson\Decoder(
     new React\Stream\ReadableResourceStream(
-        fopen(__DIR__ . '/users.ndjson', 'r'),
-        $loop
+        fopen(__DIR__ . '/users.ndjson', 'r')
     ),
     true
 );
@@ -49,4 +47,3 @@ $promise->then(
     }
 );
 
-$loop->run();
