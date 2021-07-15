@@ -71,8 +71,7 @@ Once [installed](#install), you can use the following code to process an example
 user lists by sending a (RESTful) HTTP API request for each user record:
 
 ```php
-$loop = React\EventLoop\Factory::create();
-$browser = new React\Http\Browser($loop);
+$browser = new React\Http\Browser();
 
 $concurrency = isset($argv[1]) ? $argv[1] : 3;
 
@@ -99,8 +98,7 @@ $transformer = new Transformer($concurrency, function ($user) use ($browser) {
 // load a huge number of users to process from NDJSON file
 $input = new Clue\React\NDJson\Decoder(
     new React\Stream\ReadableResourceStream(
-        fopen(__DIR__ . '/users.ndjson', 'r'),
-        $loop
+        fopen(__DIR__ . '/users.ndjson', 'r')
     ),
     true
 );
@@ -117,7 +115,6 @@ $transformer->on('end', function () {
 });
 $transformer->on('error', 'printf');
 
-$loop->run();
 ```
 
 See also the [examples](examples).
@@ -201,8 +198,7 @@ For demonstration purposes, the examples in this documentation use
 Its API can be used like this:
 
 ```php
-$loop = React\EventLoop\Factory::create();
-$browser = new React\Http\Browser($loop);
+$browser = new React\Http\Browser();
 
 $promise = $browser->get($url);
 ```
@@ -211,8 +207,7 @@ If you wrap this in a `Transformer` instance as given above, this code will look
 like this:
 
 ```php
-$loop = React\EventLoop\Factory::create();
-$browser = new React\Http\Browser($loop);
+$browser = new React\Http\Browser();
 
 $transformer = new Transformer(10, function ($url) use ($browser) {
     return $browser->get($url);
@@ -287,8 +282,8 @@ The resulting code with timeouts applied look something like this:
 ```php
 use React\Promise\Timer;
 
-$transformer = new Transformer(10, function ($uri) use ($browser, $loop) {
-    return Timer\timeout($browser->get($uri), 2.0, $loop);
+$transformer = new Transformer(10, function ($uri) use ($browser) {
+    return Timer\timeout($browser->get($uri), 2.0);
 });
 
 $transformer->write($uri);
@@ -326,8 +321,7 @@ The following examples use an async (non-blocking) transformation handler as
 given above:
 
 ```php
-$loop = React\EventLoop\Factory::create();
-$browser = new React\Http\Browser($loop);
+$browser = new React\Http\Browser();
 
 $transformer = new Transformer(10, function ($url) use ($browser) {
     return $browser->get($url);
@@ -453,8 +447,7 @@ a promise which resolves with the total number of all successful jobs
 on success.
 
 ```php
-$loop = React\EventLoop\Factory::create();
-$browser = new React\Http\Browser($loop);
+$browser = new React\Http\Browser();
 
 $promise = Transformer::all($input, 3, function ($data) use ($browser, $url) {
     return $browser->post($url, [], json_encode($data));
@@ -559,8 +552,7 @@ a promise which resolves with the first successful resolution value on
 success.
 
 ```php
-$loop = React\EventLoop\Factory::create();
-$browser = new React\Http\Browser($loop);
+$browser = new React\Http\Browser();
 
 $promise = Transformer::any($input, 3, function ($data) use ($browser, $url) {
     return $browser->post($url, [], json_encode($data));

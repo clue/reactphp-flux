@@ -5,8 +5,7 @@ use Psr\Http\Message\ResponseInterface;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-$loop = React\EventLoop\Factory::create();
-$browser = new React\Http\Browser($loop);
+$browser = new React\Http\Browser();
 
 $concurrency = isset($argv[1]) ? $argv[1] : 3;
 
@@ -35,8 +34,7 @@ $transformer = new Transformer($concurrency, function ($user) use ($browser) {
 // load a huge number of users to process from NDJSON file
 $input = new Clue\React\NDJson\Decoder(
     new React\Stream\ReadableResourceStream(
-        fopen(__DIR__ . '/users.ndjson', 'r'),
-        $loop
+        fopen(__DIR__ . '/users.ndjson', 'r')
     ),
     true
 );
@@ -53,4 +51,3 @@ $transformer->on('end', function () {
 });
 $transformer->on('error', 'printf');
 
-$loop->run();
