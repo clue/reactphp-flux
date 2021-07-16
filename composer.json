@@ -20,11 +20,11 @@
     },
     "require": {
         "react/promise": "^2.5 || ^1.2.1",
-        "react/stream": "^1.0 || ^0.7.7"
+        "react/stream": "^1.2"
     },
     "require-dev": {
         "clue/ndjson-react": "^1.0",
         "phpunit/phpunit": "^9.3 || ^5.7 || ^4.8.35",
-        "react/http": "^1.0"
+        "react/http": "^1.4"
     }
 }

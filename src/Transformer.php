@@ -45,8 +45,7 @@ use React\Promise\PromiseInterface;
  * Its API can be used like this:
  *
  * ```php
- * $loop = React\EventLoop\Factory::create();
- * $browser = new React\Http\Browser($loop);
+ * $browser = new React\Http\Browser();
  *
  * $promise = $browser->get($url);
  * ```
@@ -55,8 +54,7 @@ use React\Promise\PromiseInterface;
  * like this:
  *
  * ```php
- * $loop = React\EventLoop\Factory::create();
- * $browser = new React\Http\Browser($loop);
+ * $browser = new React\Http\Browser();
  *
  * $transformer = new Transformer(10, function ($url) use ($browser) {
  *     return $browser->get($url);
@@ -131,8 +129,8 @@ use React\Promise\PromiseInterface;
  * ```php
  * use React\Promise\Timer;
  *
- * $transformer = new Transformer(10, function ($uri) use ($browser, $loop) {
- *     return Timer\timeout($browser->get($uri), 2.0, $loop);
+ * $transformer = new Transformer(10, function ($uri) use ($browser) {
+ *     return Timer\timeout($browser->get($uri), 2.0);
  * });
  *
  * $transformer->write($uri);
@@ -170,8 +168,7 @@ use React\Promise\PromiseInterface;
  * given above:
  *
  * ```php
- * $loop = React\EventLoop\Factory::create();
- * $browser = new React\Http\Browser($loop);
+ * $browser = new React\Http\Browser();
  *
  * $transformer = new Transformer(10, function ($url) use ($browser) {
  *     return $browser->get($url);
@@ -310,8 +307,7 @@ final class Transformer extends EventEmitter implements DuplexStreamInterface
      * on success.
      *
      * ```php
-     * $loop = React\EventLoop\Factory::create();
-     * $browser = new React\Http\Browser($loop);
+     * $browser = new React\Http\Browser();
      *
      * $promise = Transformer::all($input, 3, function ($data) use ($browser, $url) {
      *     return $browser->post($url, [], json_encode($data));
@@ -463,8 +459,7 @@ final class Transformer extends EventEmitter implements DuplexStreamInterface
      * success.
      *
      * ```php
-     * $loop = React\EventLoop\Factory::create();
-     * $browser = new React\Http\Browser($loop);
+     * $browser = new React\Http\Browser();
      *
      * $promise = Transformer::any($input, 3, function ($data) use ($browser, $url) {
      *     return $browser->post($url, [], json_encode($data));
