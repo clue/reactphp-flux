@@ -7,24 +7,27 @@
     "authors": [
         {
             "name": "Christian Lück",
-            "email": "christian@lueck.tv"
+            "email": "christian@clue.engineering"
         }
     ],
-    "autoload": {
-        "psr-4": {
-            "Clue\\React\\Flux\\": "src"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": { "Clue\\Tests\\React\\Flux\\": "tests/" }
-    },
     "require": {
+        "php": ">=5.3",
         "react/promise": "^2.5 || ^1.2.1",
         "react/stream": "^1.2"
     },
     "require-dev": {
         "clue/ndjson-react": "^1.0",
-        "phpunit/phpunit": "^9.3 || ^5.7 || ^4.8.35",
+        "phpunit/phpunit": "^9.6 || ^5.7 || ^4.8.36",
         "react/http": "^1.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Clue\\React\\Flux\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Clue\\Tests\\React\\Flux\\": "tests/"
+        }
     }
 }
