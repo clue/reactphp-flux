@@ -55,7 +55,7 @@ class TransformerTest extends TestCase
         $through->write('hello');
 
         $through->on('drain', $this->expectCallableOnce());
-        $deferred->resolve();
+        $deferred->resolve(null);
     }
 
     public function testResumeAfterWriteAfterPauseEmitsDrainEventIfHandlerResolves()
@@ -167,7 +167,7 @@ class TransformerTest extends TestCase
         $through->write('hello');
         $through->write('world');
 
-        $deferred->resolve();
+        $deferred->resolve(null);
 
         $this->assertEquals(array('hello', 'world'), $pending);
     }
@@ -362,7 +362,7 @@ class TransformerTest extends TestCase
         $through->write('hello');
         $through->write('world');
         $through->end('again');
-        $deferred->resolve();
+        $deferred->resolve(null);
 
         $this->assertEquals(array('hello', 'world', 'again'), $pending);
     }
@@ -377,7 +377,7 @@ class TransformerTest extends TestCase
         $through->end('hello');
 
         $through->on('drain', $this->expectCallableNever());
-        $deferred->resolve();
+        $deferred->resolve(null);
     }
 
     public function testEndAfterCloseIsNoop()

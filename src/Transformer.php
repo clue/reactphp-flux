@@ -4,7 +4,6 @@ namespace Clue\React\Flux;
 
 use Evenement\EventEmitter;
 use InvalidArgumentException;
-use React\Promise\CancellablePromiseInterface;
 use React\Stream\DuplexStreamInterface;
 use React\Stream\Util;
 use React\Stream\WritableStreamInterface;
@@ -771,7 +770,7 @@ final class Transformer extends EventEmitter implements DuplexStreamInterface
         $this->queued = array();
 
         foreach ($this->promises as $promise) {
-            if ($promise instanceof CancellablePromiseInterface) {
+            if ($promise instanceof PromiseInterface && \method_exists($promise, 'cancel')) {
                 $promise->cancel();
             }
         }

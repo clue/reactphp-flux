@@ -12,13 +12,13 @@
     ],
     "require": {
         "php": ">=5.3",
-        "react/promise": "^2.5 || ^1.2.1",
+        "react/promise": "^3 || ^2.9 || ^1.2.1",
         "react/stream": "^1.2"
     },
     "require-dev": {
         "clue/ndjson-react": "^1.0",
         "phpunit/phpunit": "^9.6 || ^5.7 || ^4.8.36",
-        "react/http": "^1.4"
+        "react/http": "^1.8"
     },
     "autoload": {
         "psr-4": {
