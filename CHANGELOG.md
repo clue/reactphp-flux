@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.4.0 (2023-04-21)
+
+*   Feature: Forward compatibility with upcoming Promise v3.
+    (#26 by @clue)
+
+*   Feature: Full support for PHP 8.2 and update test environment.
+    (#25 by @clue)
+
+*   Update documentation and simplify examples by updating to new default loop.
+    (#23 and #24 by @PaulRotmann)
+
+*   Improve test suite, ensure 100% code coverage and use GitHub actions for continuous integration (CI).
+    (#21 and #27 by @clue)
+
 ## 1.3.0 (2020-10-16)
 
 *   Enhanced documentation for ReactPHP's new HTTP client.
