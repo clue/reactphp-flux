@@ -12,7 +12,7 @@ by individually sending a (RESTful) HTTP API request to some third party API
 for each record. Estimating each call to take around `0.3s` means that having
 `10000` users processed sequentially, you would have to wait around 50 minutes
 for all jobs to complete. This works perfectly fine for a small number of
-operations, but keeping thousands of jobs in memory at once may easly take up
+operations, but keeping thousands of jobs in memory at once may easily take up
 all resources on your side.
 Instead, you can use this library to stream your arbitrarily large input list
 as individual records to a non-blocking (async) transformation handler. It uses
@@ -141,7 +141,7 @@ also takes care of mangaging streaming throughput and back-pressure.
 The transformation handler can be any non-blocking (async) callable that uses
 [promises](#promises) to signal its eventual results. This callable receives
 a single data argument as passed to the writable side and must return a
-promise. A succesful fulfillment value will be forwarded to the readable end
+promise. A successful fulfillment value will be forwarded to the readable end
 of the stream, while an unsuccessful rejection value will emit an `error`
 event and then `close()` the stream.
 
@@ -306,7 +306,7 @@ passed through its transformation handler which is responsible for processing
 and transforming this data (see above for more details).
 
 The `Transformer` takes care of passing data you pass on its writable side to
-the transformation handler argument and forwarding resuling data to it
+the transformation handler argument and forwarding resulting data to it
 readable end.
 Each operation may take some time to complete, but due to its async nature you
 can actually start any number of (queued) operations. Once the concurrency limit
@@ -341,7 +341,7 @@ $transformer->write('http://example.com/');
 ```
 
 This handler receives a single data argument as passed to the writable side
-and must return a promise. A succesful fulfillment value will be forwarded to
+and must return a promise. A successful fulfillment value will be forwarded to
 the readable end of the stream, while an unsuccessful rejection value will
 emit an `error` event, try to `cancel()` all pending operations and then
 `close()` the stream.

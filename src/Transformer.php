@@ -26,7 +26,7 @@ use React\Promise\PromiseInterface;
  * The transformation handler can be any non-blocking (async) callable that uses
  * [promises](#promises) to signal its eventual results. This callable receives
  * a single data argument as passed to the writable side and must return a
- * promise. A succesful fulfillment value will be forwarded to the readable end
+ * promise. A successful fulfillment value will be forwarded to the readable end
  * of the stream, while an unsuccessful rejection value will emit an `error`
  * event and then `close()` the stream.
  *
@@ -151,7 +151,7 @@ use React\Promise\PromiseInterface;
  * and transforming this data (see above for more details).
  *
  * The `Transformer` takes care of passing data you pass on its writable side to
- * the transformation handler argument and forwarding resuling data to it
+ * the transformation handler argument and forwarding resulting data to it
  * readable end.
  * Each operation may take some time to complete, but due to its async nature you
  * can actually start any number of (queued) operations. Once the concurrency limit
@@ -186,7 +186,7 @@ use React\Promise\PromiseInterface;
  * ```
  *
  * The handler receives a single data argument as passed to the writable side
- * and must return a promise. A succesful fulfillment value will be forwarded to
+ * and must return a promise. A successful fulfillment value will be forwarded to
  * the readable end of the stream, while an unsuccessful rejection value will
  * emit an `error` event, try to `cancel()` all pending operations and then
  * `close()` the stream.

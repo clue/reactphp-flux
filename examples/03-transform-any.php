@@ -44,7 +44,7 @@ $promise->then(
         echo 'Successfully processed user record:' . print_r($user, true) . PHP_EOL;
     },
     function (Exception $e) {
-        echo 'An error occured: ' . $e->getMessage() . PHP_EOL;
+        echo 'An error occurred: ' . $e->getMessage() . PHP_EOL;
         if ($e->getPrevious()) {
             echo 'Previous: ' . $e->getPrevious()->getMessage() . PHP_EOL;
         }
