@@ -16,7 +16,7 @@ operations, but keeping thousands of jobs in memory at once may easily take up
 all resources on your side.
 Instead, you can use this library to stream your arbitrarily large input list
 as individual records to a non-blocking (async) transformation handler. It uses
-[ReactPHP](https://reactphp.org) to enable you to concurrently process multiple
+[ReactPHP](https://reactphp.org/) to enable you to concurrently process multiple
 records at once. You can control the concurrency limit, so that by allowing
 it to process 10 operations at the same time, you can thus process this large
 input list around 10 times faster and at the same time you're no longer limited
@@ -72,13 +72,17 @@ Once [installed](#install), you can use the following code to process an example
 user lists by sending a (RESTful) HTTP API request for each user record:
 
 ```php
+<?php
+
+require __DIR__ . '/vendor/autoload.php';
+
 $browser = new React\Http\Browser();
 
 $concurrency = isset($argv[1]) ? $argv[1] : 3;
 
 // each job should use the browser to GET a certain URL
 // limit number of concurrent jobs here
-$transformer = new Transformer($concurrency, function ($user) use ($browser) {
+$transformer = new Clue\React\Flux\Transformer($concurrency, function ($user) use ($browser) {
     // skip users that do not have an IP address listed
     if (!isset($user['ip'])) {
         return React\Promise\resolve($user);
@@ -86,7 +90,7 @@ $transformer = new Transformer($concurrency, function ($user) use ($browser) {
 
     // look up country for this IP
     return $browser->get("https://ipapi.co/$user[ip]/country_name/")->then(
-        function (ResponseInterface $response) use ($user) {
+        function (Psr\Http\Message\ResponseInterface $response) use ($user) {
             // response successfully received
             // add country to user array and return updated user
             $user['country'] = (string)$response->getBody();
@@ -411,6 +415,10 @@ $transformer = new Transformer(10, function ($data) use ($http) {
 });
 
 $source->pipe($gunzip)->pipe($ndjson)->pipe($transformer)->pipe($dest);
+
+$transformer->on('error', function (Exception $e) {
+    echo 'Error: ' . $e->getMessage() . PHP_EOL;
+});
 ```
 
 Keep in mind that the transformation handler may return a rejected promise.
@@ -456,6 +464,8 @@ $promise = Transformer::all($input, 3, function ($data) use ($browser, $url) {
 
 $promise->then(function ($count) {
     echo 'All ' . $count . ' jobs successful!' . PHP_EOL;
+}, function (Exception $e) {
+    echo 'Error: ' . $e->getMessage() . PHP_EOL;
 });
 ```
 
@@ -561,6 +571,8 @@ $promise = Transformer::any($input, 3, function ($data) use ($browser, $url) {
 
 $promise->then(function (ResponseInterface $response) {
     echo 'First successful job: ' . $response->getBody() . PHP_EOL;
+}, function (Exception $e) {
+    echo 'Error: ' . $e->getMessage() . PHP_EOL;
 });
 ```
 
