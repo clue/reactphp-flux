@@ -1,8 +1,5 @@
 <?php
 
-use Clue\React\Flux\Transformer;
-use Psr\Http\Message\ResponseInterface;
-
 require __DIR__ . '/../vendor/autoload.php';
 
 $browser = new React\Http\Browser();
@@ -11,7 +8,7 @@ $concurrency = isset($argv[1]) ? $argv[1] : 3;
 
 // each job should use the browser to GET a certain URL
 // limit number of concurrent jobs here
-$transformer = new Transformer($concurrency, function ($user) use ($browser) {
+$transformer = new Clue\React\Flux\Transformer($concurrency, function ($user) use ($browser) {
     // skip users that do not have an IP address listed
     if (!isset($user['ip'])) {
         $user['country'] = 'n/a';
@@ -21,7 +18,7 @@ $transformer = new Transformer($concurrency, function ($user) use ($browser) {
 
     // look up country for this user's IP
     return $browser->get("https://ipapi.co/$user[ip]/country_name/")->then(
-        function (ResponseInterface $response) use ($user) {
+        function (Psr\Http\Message\ResponseInterface $response) use ($user) {
             // response successfully received
             // add country to user array and return updated user
             $user['country'] = (string)$response->getBody();
@@ -50,4 +47,3 @@ $transformer->on('end', function () {
     echo '[DONE]' . PHP_EOL;
 });
 $transformer->on('error', 'printf');
-

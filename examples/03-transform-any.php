@@ -1,8 +1,5 @@
 <?php
 
-use Clue\React\Flux\Transformer;
-use Psr\Http\Message\ResponseInterface;
-
 require __DIR__ . '/../vendor/autoload.php';
 
 $browser = new React\Http\Browser();
@@ -21,12 +18,12 @@ $input = new Clue\React\NDJson\Decoder(
 // each job should use the browser to POST each user object to a certain URL
 // process all users by processing all users through transformer
 // limit number of concurrent jobs here
-$promise = Transformer::any($input, $concurrency, function ($user) use ($browser, $url) {
+$promise = Clue\React\Flux\Transformer::any($input, $concurrency, function ($user) use ($browser, $url) {
     return $browser->post(
         $url,
         array('Content-Type' => 'application/json'),
         json_encode($user)
-    )->then(function (ResponseInterface $response) use ($user) {
+    )->then(function (Psr\Http\Message\ResponseInterface $response) use ($user) {
         // demo HTTP response validation
         $body = json_decode($response->getBody());
         if (!isset($body->json)) {
@@ -50,4 +47,3 @@ $promise->then(
         }
     }
 );
-
